@@ -32,6 +32,21 @@ namespace crud_api.Controllers
             return Ok(heroes);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SuperHero>> FetchOneById(int id)
+        {
+            // Busca um herói pelo id
+            var hero = heroes.Find(h => h.Id == id);
+
+            // Se não achar um herói com o id, retorna erro
+            if(hero == null)
+            {
+                return NotFound("Hero not found.");
+            }
+
+            return Ok(hero);
+        }
+
         [HttpPost]
         public async Task<ActionResult<List<SuperHero>>> Register(SuperHero hero)
         {
