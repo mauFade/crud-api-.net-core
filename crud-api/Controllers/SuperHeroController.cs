@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace crud_api.Controllers
 {
@@ -16,7 +15,7 @@ namespace crud_api.Controllers
                     LastName = "Wayne",
                     Place = "Gotham"
                 },
-                new SuperHero {                  
+                new SuperHero {
                     Id = 2,
                     Name = "Spider Man",
                     FirstName = "Peter",
@@ -39,7 +38,7 @@ namespace crud_api.Controllers
             var hero = heroes.Find(h => h.Id == id);
 
             // Se não achar um herói com o id, retorna erro
-            if(hero == null)
+            if (hero == null)
             {
                 return NotFound("Hero not found.");
             }
@@ -54,6 +53,45 @@ namespace crud_api.Controllers
             heroes.Add(hero);
 
             return Ok(heroes);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<SuperHero>> Update(SuperHero request, int id)
+        {
+            // Busca um herói pelo id
+            var hero = heroes.Find(h => h.Id == id);
+
+            // Se não achar um herói com o id, retorna erro
+            if (hero == null)
+            {
+                return NotFound("Hero not found.");
+            }
+
+            // Ataulia os campos do herói
+            hero.Name = request.Name;
+            hero.FirstName = request.FirstName;
+            hero.LastName = request.LastName;
+            hero.Place = request.Place;
+
+            return Ok(hero);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<string>> Delete(int id)
+        {
+            // Busca um herói pelo id
+            var hero = heroes.Find(h => h.Id == id);
+
+            // Se não achar um herói com o id, retorna erro
+            if (hero == null)
+            {
+                return NotFound("Hero not found.");
+            }
+
+            // Apaga o herói
+            heroes.Remove(hero);
+
+            return Ok("Hero deleted successfully.");
         }
 
     }
